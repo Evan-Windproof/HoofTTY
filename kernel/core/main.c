@@ -23,12 +23,14 @@ static volatile unsigned char bss_probe[256];
 
 static _Noreturn void panic(const char *reason) {
     boot_state.stage = 0xff;
-    console_write("PANIC: "); console_write(reason); console_write("\n");
+    console_write("PANIC: "); 
+    console_write(reason); 
+    console_write("\n");
     cpu_halt();
 }
 _Noreturn void kernel_main(void) {
     boot_state.serial_ok = serial_init();
-    console_write("HoofTTY OS - Alpha0.0.1\n");
+    console_write("HoofTTY OS - Beta0.1.0\n");
     console_write("Independent x86-64 monolithic kernel\n");
     if (!LIMINE_BASE_REVISION_SUPPORTED) panic("Limine base revision 3 unsupported");
     boot_state.stage = 1;
@@ -59,7 +61,7 @@ _Noreturn void kernel_main(void) {
         panic("Unexpected CPU boot state");
 
     /* Repeat the title after framebuffer initialization, so both sinks show it. */
-    console_write("HoofTTY OS - Alpha0.0.1\n"); 
+    console_write("HoofTTY OS - Beta0.1.0\n"); 
     console_write("\n");
     interrupts_init();
     if (irq_state.gdtr.base != (uintptr_t)gdt || irq_state.gdtr.limit != sizeof(gdt) - 1 ||

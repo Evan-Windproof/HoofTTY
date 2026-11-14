@@ -7,7 +7,7 @@ volatile struct shell_diagnostics shell_state;
 void shell_task(void){
     char line[SHELL_LINE];unsigned used=0;bool overflow=false;
     if(!command_registry_valid()){terminal_write("error: invalid command registry\n");return;}
-    shell_state.ready=1;terminal_write("\nHoofTTY Shell: type help\nhoof> ");
+    shell_state.ready=1;terminal_write("\nHoofTTY Shell: type friendship\nhoof> ");
     for(;;){
         int c=keyboard_getchar();if(c<0){task_sleep(1);continue;}
         if(c==127){overflow=true;terminal_write("\nerror: input overflow; press Enter to discard\n");}
