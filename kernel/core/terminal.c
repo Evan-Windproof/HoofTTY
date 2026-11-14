@@ -9,11 +9,16 @@ void terminal_clear(void){
 }
 void terminal_erase(void){
     framebuffer_backspace();
-    serial_putc('\b');serial_putc(' ');serial_putc('\b');
+    serial_putc('\b');
+    serial_putc(' ');
+    serial_putc('\b');
 }
 
 void terminal_dec(uint64_t value){
-    char text[21];unsigned at=20;text[at]=0;
-    do{text[--at]=(char)('0'+value%10);value/=10;}while(value);
+    char text[21];
+    unsigned at=20;
+    text[at]=0;
+    do{text[--at]=(char)('0'+value%10);value/=10;}
+    while(value);
     terminal_write(text+at);
 }

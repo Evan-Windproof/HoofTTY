@@ -35,6 +35,7 @@ _Noreturn void kernel_main(void) {
     if (!LIMINE_BASE_REVISION_SUPPORTED) panic("Limine base revision 3 unsupported");
     boot_state.stage = 1;
     boot_state.bss_ok = 1;
+
     for (unsigned i = 0; i < sizeof(bss_probe); ++i)
         if (bss_probe[i]) boot_state.bss_ok = 0;
     if (!boot_state.bss_ok) panic("BSS not zero initialized");
@@ -49,6 +50,7 @@ _Noreturn void kernel_main(void) {
     boot_state.framebuffer_address = (uintptr_t)fb->address;
     boot_state.width = fb->width; boot_state.height = fb->height;
     boot_state.pitch = fb->pitch; boot_state.bpp = fb->bpp;
+
     __asm__ volatile ("mov %%cr0, %0" : "=r"(boot_state.cr0));
     __asm__ volatile ("mov %%cr3, %0" : "=r"(boot_state.cr3));
     __asm__ volatile ("mov %%cr4, %0" : "=r"(boot_state.cr4));
@@ -56,6 +58,7 @@ _Noreturn void kernel_main(void) {
     uint32_t low, high;
     __asm__ volatile ("rdmsr" : "=a"(low), "=d"(high) : "c"(0xc0000080));
     boot_state.efer = ((uint64_t)high << 32) | low;
+
     if (!(boot_state.cr0 & (1ULL << 31)) || !(boot_state.cr4 & (1ULL << 5)) ||
         !(boot_state.efer & (1ULL << 10)) || (boot_state.rflags & (1ULL << 9)))
         panic("Unexpected CPU boot state");
@@ -63,6 +66,7 @@ _Noreturn void kernel_main(void) {
     /* Repeat the title after framebuffer initialization, so both sinks show it. */
     console_write("HoofTTY OS - Beta0.1.0\n"); 
     console_write("\n");
+
     interrupts_init();
     if (irq_state.gdtr.base != (uintptr_t)gdt || irq_state.gdtr.limit != sizeof(gdt) - 1 ||
         irq_state.idtr.base != (uintptr_t)idt || irq_state.idtr.limit != sizeof(idt) - 1 ||
@@ -70,9 +74,11 @@ _Noreturn void kernel_main(void) {
     irq_state.register_probe_result = (uint64_t)interrupt_register_probe();
     if (irq_state.register_probe_result || irq_state.software_count != 1 || irq_state.entry_if_errors)
         panic("Interrupt return/register probe failed");
+
     console_write("Welcome to HoofTTY!\n");
     console_write("A pony-themed text operating system.\n");
     console_write("\n");
+
     interrupt_fault_test(); /* Compiled to no-op in the normal kernel. */
     if (!memory_init() || !memory_selftest()) panic("Memory initialization/selftest failed");
     memory_fault_test();
