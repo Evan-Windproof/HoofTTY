@@ -59,8 +59,8 @@ _Noreturn void kernel_main(void) {
         panic("Unexpected CPU boot state");
 
     /* Repeat the title after framebuffer initialization, so both sinks show it. */
-    console_write("HoofTTY OS - Alpha0.0.1\n");
-    console_dec(fb->height); console_write("x"); console_dec(fb->bpp); console_write("\n");
+    console_write("HoofTTY OS - Alpha0.0.1\n"); 
+    console_write("\n");
     interrupts_init();
     if (irq_state.gdtr.base != (uintptr_t)gdt || irq_state.gdtr.limit != sizeof(gdt) - 1 ||
         irq_state.idtr.base != (uintptr_t)idt || irq_state.idtr.limit != sizeof(idt) - 1 ||
@@ -69,7 +69,7 @@ _Noreturn void kernel_main(void) {
     if (irq_state.register_probe_result || irq_state.software_count != 1 || irq_state.entry_if_errors)
         panic("Interrupt return/register probe failed");
     console_write("Welcome to HoofTTY!\n");
-    console_write("A pony-themed text operting system.\n");
+    console_write("A pony-themed text operating system.\n");
     console_write("\n");
     interrupt_fault_test(); /* Compiled to no-op in the normal kernel. */
     if (!memory_init() || !memory_selftest()) panic("Memory initialization/selftest failed");
