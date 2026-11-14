@@ -59,14 +59,8 @@ _Noreturn void kernel_main(void) {
         panic("Unexpected CPU boot state");
 
     /* Repeat the title after framebuffer initialization, so both sinks show it. */
-    console_write("HoofTTY OS - Alpha0.0.0\n");
-    console_write("Boot: Limine base revision 3\n");
-    console_write("BSS: zero checked\nC runtime: selftest passed\n");
-    console_write("CPU: long mode, paging, initial IF=0\n");
-    console_write("CR3: "); console_hex(boot_state.cr3); console_write("\n");
-    console_write("Framebuffer: "); console_dec(fb->width); console_write("x");
+    console_write("HoofTTY OS - Alpha0.0.1\n");
     console_dec(fb->height); console_write("x"); console_dec(fb->bpp); console_write("\n");
-    console_write("Preemptive tasks and modular shell\n");
     interrupts_init();
     if (irq_state.gdtr.base != (uintptr_t)gdt || irq_state.gdtr.limit != sizeof(gdt) - 1 ||
         irq_state.idtr.base != (uintptr_t)idt || irq_state.idtr.limit != sizeof(idt) - 1 ||
@@ -74,17 +68,13 @@ _Noreturn void kernel_main(void) {
     irq_state.register_probe_result = (uint64_t)interrupt_register_probe();
     if (irq_state.register_probe_result || irq_state.software_count != 1 || irq_state.entry_if_errors)
         panic("Interrupt return/register probe failed");
-    console_write("GDT TSS IDT: loaded, DF IST ready\n");
-    console_write("Software INT: register/IRET selftest passed\n");
+    console_write("Welcome to HoofTTY!\n");
+    console_write("A pony-themed text operting system.\n");
+    console_write("\n");
     interrupt_fault_test(); /* Compiled to no-op in the normal kernel. */
     if (!memory_init() || !memory_selftest()) panic("Memory initialization/selftest failed");
-    console_write("MEMORY_READY free pages="); console_dec(memory_state.free); console_write(" tables=");console_dec(memory_state.tables);console_write("\n");
     memory_fault_test();
     timer_init();
-    if(KERNSEED_SHELL&&KERNSEED_SCHEDULER&&!keyboard_init())panic("PS2 keyboard initialization failed");
-    console_write(KERNSEED_SHELL&&KERNSEED_SCHEDULER ? "PIT: IRQ0 + keyboard IRQ1, divisor=" : "PIT: IRQ0 only, divisor="); console_dec(irq_state.pit_divisor);
-    console_write(" (about 100 Hz)\n");
-    console_write("BOOT_READY: entering idle loop\n");
     boot_state.stage = 2;
     kernel_idle();
 }
