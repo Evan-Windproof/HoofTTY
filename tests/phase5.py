@@ -34,7 +34,7 @@ def run(memory):
             p=subprocess.Popen(args,stderr=err,stdout=subprocess.DEVNULL);q=None
             try:
                 wait_for(qmpp.exists,p,'QMP socket');q=QMP(qmpp)
-                wait_for(lambda:serial.exists() and 'ks> ' in serial.read_text(),p,'interactive shell')
+                wait_for(lambda:serial.exists() and 'hoof> ' in serial.read_text(),p,'interactive shell')
                 def text(s):
                     for c in s:
                         shift=c.isupper() or c in SHIFT
@@ -122,10 +122,10 @@ set variable tasks[6].wake_tick=0
                 wait_for(lambda:'error: input overflow; press Enter to discard' in serial.read_text(),p,'overflow discard notification')
                 command('','error: line too long; discarded')
                 command('echo fifo-recovered','\nfifo-recovered\n')
-                before=serial.read_text().count('Kernseed Shell: type help')
+                before=serial.read_text().count('HoofTTY Shell: type help')
                 text('reboot\n')
-                wait_for(lambda:serial.read_text().count('Kernseed Shell: type help')>before,p,'hardware reboot and new shell',seconds=40)
-                command('about','Kernseed OS Phase 7')
+                wait_for(lambda:serial.read_text().count('HoofTTY Shell: type help')>before,p,'hardware reboot and new shell',seconds=40)
+                command('about','HoofTTY OS - Alpha 0.0.1')
                 q.command('quit');p.wait(timeout=5);assert p.returncode==0
             finally:
                 if q:q.close()

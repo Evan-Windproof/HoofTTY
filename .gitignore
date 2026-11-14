@@ -1,4 +1,18 @@
+# Build artifacts
 /build/
+
+# Cache
 /.cache/
 __pycache__/
+*.pyc
+
+# Local build configuration
 /config.local.mk
+
+# Clangd / Bear
+/compile_commands.json
+
+# Editor temporary files
+*.swp
+*.swo
+*~
