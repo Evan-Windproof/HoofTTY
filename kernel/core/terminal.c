@@ -22,3 +22,7 @@ void terminal_dec(uint64_t value){
     while(value);
     terminal_write(text+at);
 }
+
+void terminal_set_color(uint8_t color) {
+    framebuffer_set_color(color);
+}

@@ -6,4 +6,5 @@ void terminal_dec(uint64_t value);
 void terminal_write(const char *s);
 void terminal_clear(void);
 void terminal_erase(void);
+void terminal_set_color(uint8_t color);
 #endif

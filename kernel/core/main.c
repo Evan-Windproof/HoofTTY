@@ -6,6 +6,7 @@
 #include <kernseed/interrupts.h>
 #include <kernseed/memory.h>
 #include <kernseed/keyboard.h>
+#include <kernseed/shell.h>
 
 __attribute__((used, section(".limine_requests_start")))
 static volatile LIMINE_REQUESTS_START_MARKER
@@ -30,7 +31,7 @@ static _Noreturn void panic(const char *reason) {
 }
 _Noreturn void kernel_main(void) {
     boot_state.serial_ok = serial_init();
-    console_write("HoofTTY OS - Beta0.1.0\n");
+    console_write("HoofTTY OS - Beta0.2.0\n");
     console_write("Independent x86-64 monolithic kernel\n");
     if (!LIMINE_BASE_REVISION_SUPPORTED) panic("Limine base revision 3 unsupported");
     boot_state.stage = 1;
@@ -64,7 +65,8 @@ _Noreturn void kernel_main(void) {
         panic("Unexpected CPU boot state");
 
     /* Repeat the title after framebuffer initialization, so both sinks show it. */
-    console_write("HoofTTY OS - Beta0.1.0\n"); 
+    framebuffer_set_color(10);
+    console_write("HoofTTY OS - Beta0.2.0\n"); 
     console_write("\n");
 
     interrupts_init();
@@ -75,7 +77,10 @@ _Noreturn void kernel_main(void) {
     if (irq_state.register_probe_result || irq_state.software_count != 1 || irq_state.entry_if_errors)
         panic("Interrupt return/register probe failed");
 
+    framebuffer_set_color(14);
     console_write("Welcome to HoofTTY!\n");
+
+    framebuffer_set_color(7);
     console_write("A pony-themed text operating system.\n");
     console_write("\n");
 

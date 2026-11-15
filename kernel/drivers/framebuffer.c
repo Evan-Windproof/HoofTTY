@@ -52,6 +52,16 @@ static const uint8_t font[128][7] = {
     ['&'] = {12,18,20,8,21,18,13}, ['*'] = {0,21,14,31,14,21,0},
     ['^'] = {4,10,17,0,0,0,0},
 };
+
+
+static const uint32_t ansi_palette[16] = {
+    0x000000, 0xAA0000, 0x00AA00, 0xAA5500,
+    0x0000AA, 0xAA00AA, 0x00AAAA, 0xAAAAAA,
+    0x555555, 0xFF5555, 0x55FF55, 0xFFFF55,
+    0x5555FF, 0xFF55FF, 0x55FFFF, 0xFFFFFF
+};
+
+
 static struct limine_framebuffer *screen;
 static uint64_t column, row;
 static uint32_t foreground;
@@ -119,3 +129,20 @@ void framebuffer_backspace(void){
     else return;
     for(unsigned y=0;y<CELL_H;y++)for(unsigned x=0;x<CELL_W;x++)pixel(column*CELL_W+x,row*CELL_H+y,0);
 }
+
+void framebuffer_set_color(uint8_t index) {
+    if (!screen || index >= 16)
+        return;
+
+    uint32_t rgb = ansi_palette[index];
+
+    uint32_t r = (rgb >> 16) & 0xFF;
+    uint32_t g = (rgb >> 8) & 0xFF;
+    uint32_t b = rgb & 0xFF;
+
+    foreground =
+        (r << screen->red_mask_shift) |
+        (g << screen->green_mask_shift) |
+        (b << screen->blue_mask_shift);
+}
+

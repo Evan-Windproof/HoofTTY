@@ -10,6 +10,7 @@ bool framebuffer_init(struct limine_framebuffer *fb);
 void framebuffer_putc(char c);
 void framebuffer_clear(void);
 void framebuffer_backspace(void);
+void framebuffer_set_color(uint8_t index);
 void console_write(const char *s);
 void console_hex(uint64_t value);
 void console_dec(uint64_t value);
