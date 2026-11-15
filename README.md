@@ -1,145 +1,145 @@
-# HoofTTY 🐴
+# HoofTTY
 
-**An open-source, My Little Pony–inspired, text-based hobby operating system.**
+**Beta 0.3.0 · A My Little Pony–inspired, text-first hobby operating system for x86-64.**
 
-> **Status: Early development** — HoofTTY is an experimental project. Its features, interfaces, and build instructions may change as development continues.
+[English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+
+> **Development status:** Experimental beta. HoofTTY is a standalone hobby OS based on **Kernseed OS Phase 7**, not a Linux distribution, a Linux shell theme, or a terminal emulator. It runs its own kernel and shell. Do not use it for important data or production workloads.
 >
-> **Language:** [English](#english) · [简体中文](#简体中文)
+> **Licensing note:** The repository uses **PolyForm Noncommercial 1.0.0**. Its source is public, but the license restricts commercial uses and is **not OSI-approved open source**. See [License](#license-and-fan-project-notice).
 
----
+## What is HoofTTY?
 
-## English
+HoofTTY explores how a recognizable pony-inspired personality can be expressed in a small operating system without a desktop GUI. It combines a text-oriented interactive shell, themed commands, a custom bitmap font, a 16-color framebuffer text renderer, and a small pixel-art mascot at boot.
 
-### Overview
+The project **inherits Kernseed's educational x86-64 monolithic-kernel foundation**. Some `kernseed` directory names, build flags, and boot-image filenames deliberately remain in place to avoid destabilizing working paths. These internal identifiers are not the user-facing product name.
 
-**HoofTTY** is an independent, text-based hobby operating system inspired by *My Little Pony*. Instead of relying on a conventional graphical desktop, the project explores how a recognizable theme and personality can be expressed through a terminal-style interface, shell commands, text, and ASCII art.
+HoofTTY is a fan-made, non-commercial experiment; it is **not affiliated with, sponsored by, or endorsed by Hasbro**.
 
-HoofTTY is being developed from **Kernseed OS Phase 7**, an earlier educational operating-system project. It is **not a Linux distribution, a terminal emulator, or simply a theme for an existing shell**. The goal is to evolve the existing OS codebase into a distinct, usable text-based system, while keeping the development process approachable and educational.
+## Beta 0.3.0 — current capabilities
 
-This is a fan-made, non-commercial project and is not affiliated with or endorsed by Hasbro.
-
-### Project goals
-
-- **Text-first experience:** Make the system's identity visible without requiring a graphical user interface.
-- **Distinctive shell:** Gradually develop HoofTTY-specific commands, messages, and text-based interactions.
-- **Original visual identity:** Explore ASCII art and other original terminal-friendly artwork inspired by the atmosphere of Equestria.
-- **Learn by building:** Use real operating-system source code to study and improve low-level mechanisms.
-- **Open development:** Share source code and document changes as the project grows.
-
-These are **goals, not a list of completed features**.
-
-### Current development status
-
-HoofTTY development has begun with modifications to the existing Kernseed OS codebase, including early shell and welcome-text customization. It remains at a very early stage; many planned HoofTTY-specific features are not yet implemented.
-
-| Area | Status |
+| Area | Present behavior |
 | --- | --- |
-| Starting codebase | Kernseed OS Phase 7 |
-| HoofTTY branding / shell customization | In progress |
-| HoofTTY-specific commands and interactions | Planned / evolving |
-| Text-based themed presentation | Planned / evolving |
-| Stable public release | Not yet available |
+| Boot | Limine-based boot image; QEMU launch workflow included |
+| Kernel | x86-64 educational monolithic kernel; inherited interrupts, memory management, scheduling and built-in Ring 3 demos |
+| Display | Framebuffer terminal with original 5×7 ASCII bitmap glyphs (rendered larger on screen) and **16 foreground colors** |
+| Boot appearance | Colored HoofTTY welcome text and an experimental **Evan** indexed-color sprite (48×54 source pixels) |
+| Shell | `hoof>` prompt, command registry, bounded argument parsing and basic line editing |
+| Pony-themed commands | `friendship`, `party`, `rainboom`, `yay` |
+| Diagnostics | System information, memory statistics, task states and PIT-based uptime |
+| Embedded apps | A fixed set of built-in Ring 3 examples; **no general-purpose ELF loader** |
 
-*This table is a high-level roadmap, not a claim of verified functionality. Check the source and commit history for the latest implementation details.*
+**Important:** The screenshot / checked-in command registry for this version has **13 commands**. Earlier ideas such as `pony` and the hidden `Who's Evan?` command are *not* listed as implemented shell commands. The Evan boot sprite is a separate visual feature.
 
-### Building and running
+## Quick start
 
-HoofTTY is currently a source-first development project. The exact build requirements and commands depend on the checked-in code and toolchain.
+### Requirements
 
-If the repository retains the Kernseed-style Makefile target for creating a bootable image, the usual entry point is:
+A Linux build environment (including WSL where the required tools are installed) with:
+
+- GCC with x86-64 support, GNU binutils (`ld`, `objcopy`), GNU Make and a host C compiler
+- Python 3, Git, `sha256sum`, POSIX shell utilities, and `xorriso`
+- QEMU (`qemu-system-x86_64`) for the provided run targets
+- Network access on the first dependency fetch: the build script fetches a pinned Limine revision and checks recorded hashes
+
+Build from the **repository root**:
 
 ```sh
+git clone https://github.com/Evan-Windproof/HoofTTY.git
+cd HoofTTY
 make iso
+make run
 ```
 
-The command above is **conditional**: verify the available targets, prerequisites, and output location in the repository's `Makefile` before using it. An ISO image does not necessarily imply compatibility with every emulator or real machine. Any release-specific QEMU or VMware instructions should be documented and tested before publication.
+The ISO generated by the current Makefile is **`build/kernseed.iso`**. That retained internal filename is intentional; the booted system identifies itself as HoofTTY. The default QEMU script uses 128 MiB RAM, one virtual CPU and a standard VGA device.
 
-For now, consult the repository's source files, build scripts, and commit history. Tested configurations and detailed steps will be added as they are confirmed.
-
-### Relationship to Kernseed OS
-
-HoofTTY is derived from the educational **Kernseed OS Phase 7** codebase. Kernseed serves as the technical foundation; HoofTTY is intended to become a separate project with its own identity and direction.
-
-The original Kernseed copyright and licensing obligations continue to apply to any reused code. See the repository's license and source-file notices for the applicable terms.
-
-### Contributions and feedback
-
-The project is in an experimental stage. Technical feedback, bug reports, and thoughtful suggestions are welcome through GitHub Issues when they are enabled.
-
-Please do not assume a particular feature is supported unless it appears in the source code or accompanying documentation.
-
-### License and fan-project notice
-
-**Code license:** See the repository's `LICENSE` file for the definitive licensing terms. **Before publishing the repository, confirm that this file exists and that the terms permit the intended use and redistribution of all inherited code.**
-
-*My Little Pony* and related names and characters belong to their respective rights holders. HoofTTY is an unofficial fan project; it is not associated with, sponsored by, or endorsed by Hasbro. This notice does not grant rights to use third-party trademarks or copyrighted assets. The project aims to use original assets and avoid bundling unlicensed official media.
-
----
-
-## 简体中文
-
-### 项目简介
-
-**HoofTTY** 是一款受《My Little Pony》（《小马宝莉》）启发的、以纯文本交互为核心的开源业余操作系统。
-
-它不依赖传统图形桌面，而是尝试通过终端风格的界面、Shell 命令、文字以及 ASCII 艺术，让用户在纯文本环境中感受到鲜明的主题风格。
-
-HoofTTY 基于此前的教学操作系统 **Kernseed OS Phase 7** 开发。它**不是 Linux 发行版、终端模拟器，也不是给现有 Shell 换一个主题**。项目希望逐步将现有的操作系统代码发展为具有独立特色、能够实际使用的纯文本系统，同时保留学习和研究底层技术的价值。
-
-本项目是非商业的非官方同人创作，与 Hasbro 没有隶属、赞助或认可关系。
-
-### 项目目标
-
-- **纯文本优先：** 不依赖图形界面，也能展现系统的独特风格。
-- **独立的 Shell 体验：** 逐步设计属于 HoofTTY 的命令、提示信息及文本交互。
-- **原创视觉风格：** 探索 ASCII 艺术及其他适合纯文本环境的原创设计。
-- **在实践中学习：** 通过阅读与修改真实操作系统源码，理解并改进底层机制。
-- **开放开发：** 公开源码，持续记录系统的成长过程。
-
-以上内容是**开发目标，并非已经完成的功能清单**。
-
-### 当前开发状态
-
-HoofTTY 已经开始在 Kernseed OS 的现有代码基础上进行修改，包括早期的 Shell 和欢迎文字定制。但项目仍处于初期阶段，大部分 HoofTTY 专属功能尚未完成。
-
-| 项目 | 状态 |
-| --- | --- |
-| 起始代码基础 | Kernseed OS Phase 7 |
-| HoofTTY 品牌与 Shell 定制 | 开发中 |
-| 专属命令与交互 | 规划 / 逐步实现 |
-| 纯文本主题展示 | 规划 / 逐步实现 |
-| 稳定公开版本 | 尚未发布 |
-
-*本表只展示整体方向，不代表功能已经通过验证。最新实现情况以仓库源码及提交记录为准。*
-
-### 构建与运行
-
-HoofTTY 当前以源码开发为主。具体构建依赖和命令需以仓库中的实际工具链及构建脚本为准。
-
-如果项目仍保留 Kernseed 风格的 Makefile ISO 构建目标，通常可以使用：
+Additional developer commands:
 
 ```sh
-make iso
+make test-host     # host-side unit tests
+make check         # ELF checks (builds the kernel if needed)
+make headless      # QEMU without a graphical display; serial output
+make debug         # QEMU paused with GDB server at 127.0.0.1:1234
+make clean         # remove build outputs
 ```
 
-**注意：** 上述命令以仓库实际存在对应目标为前提。执行前请查看 `Makefile`，确认依赖、输出路径及构建目标。生成 ISO 不代表它一定能在所有模拟器或实体设备上运行。待实际验证后，再补充 QEMU / VMware 的具体运行教程。
+`make test` runs a broader, multi-configuration test sequence that may take longer and can change the active build configuration; use it when preparing a release. These instructions describe the checked-in Makefile and scripts, not a claim that every target has been run for Beta 0.3.0. **QEMU graphics have been demonstrated during development; VMware and physical-hardware compatibility are not guaranteed.**
 
-目前可先通过源码、构建脚本和 Git 提交记录了解项目。经过验证的环境与运行步骤会逐步补充。
+## Shell command reference
 
-### 与 Kernseed OS 的关系
+At the prompt, type `friendship` to see the command list. Commands are case-sensitive.
 
-HoofTTY 以教学项目 **Kernseed OS Phase 7** 为基础进行后续开发。Kernseed 提供技术起点，而 HoofTTY 将逐步形成独立的项目身份和开发方向。
+| Command | Usage | Purpose |
+| --- | --- | --- |
+| `about` | `about` | Show system information and license/build limitations |
+| `apps` | `apps` | List built-in native applications |
+| `colors` | `colors` | Demonstrate the 16-color **foreground** palette |
+| `echo` | `echo [text ...]` | Print parsed arguments; up to seven text arguments |
+| `friendship` | `friendship [command]` | List commands or show help for one command |
+| `meminfo` | `meminfo` | Show physical memory counters (pages and tables) |
+| `party` | `party` | Print a colorful Pinkie Pie–themed party message |
+| `rainboom` | `rainboom` | Clear the terminal screen |
+| `reboot` | `reboot` | Request a PC reset via the i8042 controller |
+| `run` | `run name` | Run one of the registered built-in Ring 3 applications |
+| `tasks` | `tasks` | Display task IDs, states, switches and runtime ticks |
+| `uptime` | `uptime` | Display elapsed PIT tick count and estimated seconds |
+| `yay` | `yay` | Print a small Fluttershy-inspired cheer |
 
-对于继承的代码，仍需遵守 Kernseed 原有的版权及许可证要求。具体条款以仓库中的许可证文件及源代码版权声明为准。
+Example session:
 
-### 参与与反馈
+```text
+hoof> friendship
+hoof> friendship colors
+hoof> colors
+hoof> party
+hoof> apps
+hoof> run hello
+hoof> meminfo
+```
 
-项目尚处于实验阶段。开放 GitHub Issues 后，欢迎提交技术建议、Bug 反馈与合理的功能构想。
+`apps` currently lists: `hello`, `counter`, `probe`, `privileged`, `kernelread`, `kernelwrite`, `badflags`, and `badstack`. Some are low-level privilege/fault-testing examples; do not assume they are safe, general-purpose programs. The Shell registry uses exact command names: **`help` and `clear` are not guaranteed aliases** for `friendship` and `rainboom`.
 
-对于某项功能是否已可使用，请以实际代码和文档为准。
+## Project layout
 
-### 许可证与同人声明
+```text
+boot/                 Limine configuration and linker script
+include/kernseed/     inherited kernel/terminal/command interfaces
+include/Pony/         indexed-color sprite definitions (including Evan)
+kernel/               kernel core, drivers, interrupts, memory, scheduler, etc.
+shell/commands/       registered shell commands
+apps/                 embedded Ring 3 demonstration applications
+scripts/              dependency retrieval and QEMU helpers
+tests/                host-side and system-level tests
+Makefile              build, ISO, run and test targets
+```
 
-**代码许可证：** 请以仓库的 `LICENSE` 文件为准。**公开仓库前，务必确认该文件存在，并核实继承代码的许可证是否允许计划中的使用和分发方式。**
+The source uses `REGISTER_COMMAND(...)` registrations in `shell/commands/` and a matching Makefile wildcard. New command files can usually be added without rewriting the command dispatcher.
 
-《My Little Pony》相关名称、角色及其他知识产权归各自权利人所有。HoofTTY 是非官方同人项目，不隶属于 Hasbro，也未获得其赞助或认可。本声明不代表自动取得使用第三方商标及版权素材的许可。项目将尽量采用原创素材，避免未经许可直接打包官方媒体资源。
+## Known limitations and cautions
+
+- **Experimental**: no production stability, security, compatibility or data-retention guarantees.
+- Terminal text rendering is currently **ASCII-oriented**. This is not yet a general UTF-8/Unicode or Chinese-capable terminal.
+- The **16-color feature controls foreground text**. A full ANSI escape-sequence parser and arbitrary background colors are not documented as complete.
+- Text color is stateful; a themed command may leave the next `hoof>` prompt colored. Treat this as experimental behavior, not a stable API.
+- The Evan boot image is drawn directly to the framebuffer; `rainboom`/scrolling may clear, move or overwrite it.
+- The system does **not** offer a general ELF loader or a mainstream application ecosystem. Built-in test apps have fixed names.
+- `reboot` depends on the virtual/physical i8042 controller and may fail on unsupported configurations.
+- The currently registered `rainboom` implementation allows **zero arguments**, even though its internal usage string may display `[arg]`.
+- Internal names such as `kernseed.elf`, `kernseed.iso`, `KERNSEED_*` and `include/kernseed/` are retained for compatibility; do not rename them independently.
+
+## Roadmap (ideas, not promises)
+
+- Improve sprite placement, resolution independence and drawing tests.
+- Add more deliberate terminal-color behavior and optional background/ANSI support.
+- Add original pony art and optional character-themed commands (for example `pony` when actually implemented).
+- Consider Unicode and CJK text only after the terminal architecture can support them reliably.
+
+## Contributing and feedback
+
+Bug reports, reproducible QEMU logs, narrowly scoped patches, and documentation suggestions are welcome via the repository's GitHub interface where available. Please include the command, build configuration and exact symptoms. Development remains hobby-scale and no support schedule is promised.
+
+## License and fan-project notice
+
+The repository's own code is licensed under **[PolyForm Noncommercial 1.0.0](LICENSE)**, subject to the actual file notices and inherited obligations. **This is a source-available noncommercial license, not an OSI-approved open-source license.** Consult [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for the Limine and other third-party notices. No license to third-party character art, trademarks, or media is implied.
+
+*My Little Pony* and related properties belong to their respective rights holders. HoofTTY is an unofficial fan project, with an original creator avatar (Evan) used as a decorative development sprite; it is not an official MLP product.
