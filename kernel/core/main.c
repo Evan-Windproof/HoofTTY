@@ -85,10 +85,13 @@ _Noreturn void kernel_main(void) {
     console_write("A pony-themed text operating system.\n");
     console_write("\n");
 
-    framebuffer_darw_sprite(
+
+    /* Draw Evan sprite */
+    framebuffer_draw_sprite(
         600, 40,
-        24, 24,
-        &evan_sprite[0][0],
+        evan_sprite.width,
+        evan_sprite.height,
+        evan_sprite.pixels,
         6
     );
 
