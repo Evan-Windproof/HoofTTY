@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0 */
 #include <kernseed/console.h>
 #include <limine.h>
+#include <stddef.h>
 
 /* Original 5x7 bitmap alphabet. Lowercase is displayed as uppercase.
  * Each row occupies five low bits, leftmost pixel in bit 4. No font dependency. */

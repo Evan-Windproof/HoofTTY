@@ -32,7 +32,7 @@ static _Noreturn void panic(const char *reason) {
 }
 _Noreturn void kernel_main(void) {
     boot_state.serial_ok = serial_init();
-    console_write("HoofTTY OS - Beta0.2.0\n");
+    console_write("HoofTTY OS - Beta0.3.0\n");
     console_write("Independent x86-64 monolithic kernel\n");
     if (!LIMINE_BASE_REVISION_SUPPORTED) panic("Limine base revision 3 unsupported");
     boot_state.stage = 1;
@@ -67,7 +67,7 @@ _Noreturn void kernel_main(void) {
 
     /* Repeat the title after framebuffer initialization, so both sinks show it. */
     framebuffer_set_color(10);
-    console_write("HoofTTY OS - Beta0.2.0\n"); 
+    console_write("HoofTTY OS - Beta0.3.0\n"); 
     console_write("\n");
 
     interrupts_init();
@@ -92,7 +92,7 @@ _Noreturn void kernel_main(void) {
         evan_sprite.width,
         evan_sprite.height,
         evan_sprite.pixels,
-        6
+        3
     );
 
     interrupt_fault_test(); /* Compiled to no-op in the normal kernel. */
