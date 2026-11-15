@@ -11,6 +11,14 @@ void framebuffer_putc(char c);
 void framebuffer_clear(void);
 void framebuffer_backspace(void);
 void framebuffer_set_color(uint8_t index);
+void framebuffer_draw_sprite(
+    uint32_t x,
+    uint32_t y,
+    uint32_t width,
+    uint32_t height,
+    const uint8_t *pixels,
+    uint32_t scale
+);
 void console_write(const char *s);
 void console_hex(uint64_t value);
 void console_dec(uint64_t value);

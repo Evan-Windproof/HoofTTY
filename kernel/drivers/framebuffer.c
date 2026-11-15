@@ -146,3 +146,60 @@ void framebuffer_set_color(uint8_t index) {
         (b << screen->blue_mask_shift);
 }
 
+
+void framebuffer_draw_sprite(
+    uint32_t x,
+    uint32_t y,
+    uint32_t width,
+    uint32_t height,
+    const uint8_t *pixels,
+    uint32_t scale
+) {
+    if (!screen || !pixels || !scale || !width || !height)
+        return;
+
+    if (x >= screen->width || y >= screen->height)
+        return;
+
+    for (uint32_t py = 0; py < height; ++py) {
+        for (uint32_t px = 0; px < width; ++px) {
+
+            uint8_t index = pixels[(size_t)py * width + px];
+
+            /* 255 means transparent. */
+            if (index == 255 || index >= 16)
+                continue;
+
+            uint32_t rgb = ansi_palette[index];
+
+            uint32_t r = (rgb >> 16) & 0xFF;
+            uint32_t g = (rgb >> 8) & 0xFF;
+            uint32_t b = rgb & 0xFF;
+
+            uint32_t color =
+                (r << screen->red_mask_shift) |
+                (g << screen->green_mask_shift) |
+                (b << screen->blue_mask_shift);
+
+            /* Draw each sprite pixel at the requested scale. */
+            for (uint32_t sy = 0; sy < scale; ++sy) {
+                uint64_t dy = (uint64_t)y +
+                              (uint64_t)py * scale + sy;
+
+                if (dy >= screen->height)
+                    continue;
+
+                for (uint32_t sx = 0; sx < scale; ++sx) {
+                    uint64_t dx = (uint64_t)x +
+                                  (uint64_t)px * scale + sx;
+
+                    if (dx >= screen->width)
+                        continue;
+
+                    pixel(dx, dy, color);
+                }
+            }
+        }
+    }
+}
+

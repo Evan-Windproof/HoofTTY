@@ -7,6 +7,7 @@
 #include <kernseed/memory.h>
 #include <kernseed/keyboard.h>
 #include <kernseed/shell.h>
+#include <Pony/evan.h>
 
 __attribute__((used, section(".limine_requests_start")))
 static volatile LIMINE_REQUESTS_START_MARKER
@@ -83,6 +84,13 @@ _Noreturn void kernel_main(void) {
     framebuffer_set_color(7);
     console_write("A pony-themed text operating system.\n");
     console_write("\n");
+
+    framebuffer_darw_sprite(
+        600, 40,
+        24, 24,
+        &evan_sprite[0][0],
+        6
+    );
 
     interrupt_fault_test(); /* Compiled to no-op in the normal kernel. */
     if (!memory_init() || !memory_selftest()) panic("Memory initialization/selftest failed");
