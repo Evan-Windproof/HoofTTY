@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #include <kernseed/shell.h>
 #include <kernseed/terminal.h>
 #include <kernseed/console.h>

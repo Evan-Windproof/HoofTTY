@@ -6,7 +6,7 @@
 
 > **Development status:** Experimental beta. HoofTTY is a standalone hobby OS based on **Kernseed OS Phase 7**, not a Linux distribution, a Linux shell theme, or a terminal emulator. It runs its own kernel and shell. Do not use it for important data or production workloads.
 >
-> **Licensing note:** The repository uses **PolyForm Noncommercial 1.0.0**. Its source is public, but the license restricts commercial uses and is **not OSI-approved open source**. See [License](#license-and-fan-project-notice).
+> **Licensing note:** Project-owned code is licensed under **GNU GPL version 3 or later (`GPL-3.0-or-later`)**. Commercial and noncommercial use are permitted subject to the GPL. Third-party components retain their licenses. See [License](#license-and-fan-project-notice).
 
 ## What is HoofTTY?
 
@@ -14,7 +14,7 @@ HoofTTY explores how a recognizable pony-inspired personality can be expressed i
 
 The project **inherits Kernseed's educational x86-64 monolithic-kernel foundation**. Some `kernseed` directory names, build flags, and boot-image filenames deliberately remain in place to avoid destabilizing working paths. These internal identifiers are not the user-facing product name.
 
-HoofTTY is a fan-made, non-commercial experiment; it is **not affiliated with, sponsored by, or endorsed by Hasbro**.
+HoofTTY is a fan-made hobby experiment; it is **not affiliated with, sponsored by, or endorsed by Hasbro**.
 
 ## Beta 0.3.0 — current capabilities
 
@@ -140,6 +140,6 @@ Bug reports, reproducible QEMU logs, narrowly scoped patches, and documentation 
 
 ## License and fan-project notice
 
-The repository's own code is licensed under **[PolyForm Noncommercial 1.0.0](LICENSE)**, subject to the actual file notices and inherited obligations. **This is a source-available noncommercial license, not an OSI-approved open-source license.** Consult [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for the Limine and other third-party notices. No license to third-party character art, trademarks, or media is implied.
+The repository's own code, including the inherited Kernseed code, is licensed under **GNU GPL version 3 or (at your option) any later version (`GPL-3.0-or-later`)**. You may use, modify, and redistribute it for commercial or noncommercial purposes subject to the GPL. The complete GPLv3 text is in [LICENSE](LICENSE). HoofTTY is a derivative of [Kernseed OS](https://github.com/Evan-Windproof/Kernseed_OS). Third-party components retain their original licenses; see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md). This change does not revoke the licenses already granted for historical releases; their original notices and terms remain applicable. The previous PolyForm text is preserved as a [historical record](docs/licenses/PolyForm-Noncommercial-1.0.0.md). No license to third-party character art, trademarks, or media is implied.
 
 *My Little Pony* and related properties belong to their respective rights holders. HoofTTY is an unofficial fan project, with an original creator avatar (Evan) used as a decorative development sprite; it is not an official MLP product.

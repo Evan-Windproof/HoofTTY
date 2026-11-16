@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
 #ifndef HOOFTTY_PONY_EVAN_H
 #define HOOFTTY_PONY_EVAN_H
 
