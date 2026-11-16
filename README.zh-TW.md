@@ -6,7 +6,7 @@
 
 > **開發狀態：實驗性 Beta。** HoofTTY 是由 **Kernseed OS Phase 7** 延伸而來的獨立業餘作業系統，不是 Linux 發行版、既有 Shell 主題，也不是終端機模擬器。請勿用於正式工作或儲存重要資料。
 >
-> **授權提醒：** 本儲存庫使用 **PolyForm Noncommercial 1.0.0**。原始碼公開，但授權限制商業使用，**並非 OSI 認可的開放原始碼授權**；詳見文末。
+> **授權提醒：** 專案自有程式碼採用 **GNU GPL 第 3 版或後續版本（`GPL-3.0-or-later`）**。允許商業與非商業使用，但必須遵守 GPL；第三方元件保留原授權，詳見文末。
 
 ## 專案簡介
 
@@ -14,7 +14,7 @@ HoofTTY 嘗試不依賴傳統圖形桌面，透過獨立的 Shell、MLP 主題�
 
 專案延續了 **Kernseed OS Phase 7 的教學型 x86-64 巨集核心（monolithic kernel）基礎**。為避免破壞現有可用的建置路徑，部分內部名稱依舊保留 `kernseed`，例如標頭檔目錄、編譯巨集與 ISO/ELF 檔名；對使用者顯示的產品名稱仍為 **HoofTTY**。
 
-這是個人興趣性質的非商業同人專案，與 Hasbro 並無從屬、贊助或官方認可關係。
+這是個人興趣性質的同人專案，與 Hasbro 並無從屬、贊助或官方認可關係。
 
 ## Beta 0.3.0 目前進度
 
@@ -140,6 +140,6 @@ Shell 利用 `REGISTER_COMMAND(...)` 註冊指令，而 Makefile 會收集 `shel
 
 ## 授權與同人聲明
 
-本儲存庫自身原始碼使用 **[PolyForm Noncommercial 1.0.0](LICENSE)**，並受各檔案著作權聲明及繼承程式碼義務約束。**這是限制商業使用的原始碼可見授權，不是 OSI 認可的開放原始碼授權。** Limine 與其他第三方元件的通知請見 [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)。本專案授權不會自動授予第三方角色、美術、商標或媒體內容之使用權。
+本儲存庫自有程式碼（包括繼承的 Kernseed 程式碼）採用 **GNU GPL 第 3 版或由您選擇的任何後續版本（`GPL-3.0-or-later`）**。允許商業與非商業使用、修改和再散布，但必須遵守 GPL；正式 GPLv3 全文見 [LICENSE](LICENSE)。HoofTTY 是基於 [Kernseed OS](https://github.com/Evan-Windproof/Kernseed_OS) 的衍生專案。第三方元件保留原授權，詳見 [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)。本次變更不會撤銷歷史 Release 已授予的授權，歷史版本仍應依其原有聲明與條款使用；舊 PolyForm 文本保留為[歷史記錄](docs/licenses/PolyForm-Noncommercial-1.0.0.md)。專案授權不會自動授予第三方角色、美術、商標或媒體內容之使用權。
 
 《My Little Pony》及相關著作權和商標歸各自權利人所有。HoofTTY 為非官方同人專案，Evan 是作者自行創作的角色頭像，不代表官方 MLP 作品。
