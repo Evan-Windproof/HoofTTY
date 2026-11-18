@@ -83,17 +83,51 @@ _Noreturn void kernel_main(void) {
 
     framebuffer_set_color(7);
     console_write("A pony-themed text operating system.\n");
+    framebuffer_set_color(8);  /* Dark Gray */
+
+    console_write("Display: ");
+    console_dec(fb->width);
+    console_write("x");
+    console_dec(fb->height);
+    console_write("x");
+    console_dec(fb->bpp);
+    console_write("\n");
+
+    framebuffer_set_color(7);
     console_write("\n");
 
 
-    /* Draw Evan sprite */
-    framebuffer_draw_sprite(
-        600, 40,
-        evan_sprite.width,
-        evan_sprite.height,
-        evan_sprite.pixels,
-        3
-    );
+    /* Draw Evan sprite with resolution-aware placement. */
+    {
+        const uint32_t scale = 3;
+        const uint32_t margin = 24;
+
+        uint64_t sprite_w =
+            (uint64_t)evan_sprite.width * scale;
+        uint64_t sprite_h =
+            (uint64_t)evan_sprite.height * scale;
+
+        uint64_t screen_w = fb->width;
+        uint64_t screen_h = fb->height;
+
+        if (screen_w >= sprite_w + margin * 2 &&
+            screen_h >= sprite_h + margin * 2) {
+
+            uint32_t sprite_x =
+                (uint32_t)(screen_w - sprite_w - margin);
+
+            uint32_t sprite_y = 40;
+
+            framebuffer_draw_sprite(
+                sprite_x,
+                sprite_y,
+                evan_sprite.width,
+                evan_sprite.height,
+                evan_sprite.pixels,
+                scale
+            );
+        }
+    }
 
     interrupt_fault_test(); /* Compiled to no-op in the normal kernel. */
     if (!memory_init() || !memory_selftest()) panic("Memory initialization/selftest failed");

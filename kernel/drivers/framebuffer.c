@@ -66,18 +66,94 @@ static const uint32_t ansi_palette[16] = {
 static struct limine_framebuffer *screen;
 static uint64_t column, row;
 static uint32_t foreground;
-enum { CELL_W = 12, CELL_H = 18 };
+enum { 
+    CELL_W = 12, 
+    CELL_H = 18 
+};
+
+enum {
+    CURSOR_W = 10,
+    CURSOR_H = 2
+};
+
+static bool cursor_visible;
+static uint64_t cursor_x, cursor_y;
+static uint32_t cursor_saved[CURSOR_W * CURSOR_H];
 
 static void pixel(uint64_t x, uint64_t y, uint32_t color) {
     volatile uint32_t *p = (volatile uint32_t *)((uint8_t *)screen->address
                                                + y * screen->pitch + x * 4);
     *p = color;
 }
+
+void framebuffer_cursor_hide(void) {
+    if (!screen || !cursor_visible)
+        return;
+
+    for (unsigned y = 0; y < CURSOR_H; ++y) {
+        for (unsigned x = 0; x < CURSOR_W; ++x) {
+            pixel(
+                cursor_x + x,
+                cursor_y + y,
+                cursor_saved[y * CURSOR_W + x]
+            );
+        }
+    }
+
+    cursor_visible = false;
+}
+
+void framebuffer_cursor_show(void) {
+    if (!screen || cursor_visible)
+        return;
+
+    uint64_t x = column * CELL_W + 1;
+    uint64_t y = row * CELL_H + CELL_H - 3;
+
+    if (x >= screen->width ||
+        y >= screen->height ||
+        CURSOR_W > screen->width - x ||
+        CURSOR_H > screen->height - y)
+        return;
+
+    cursor_x = x;
+    cursor_y = y;
+
+    uint32_t rgb = 0x55FF55;
+
+    uint32_t color =
+        (0x55U << screen->red_mask_shift) |
+        (0xFFU << screen->green_mask_shift) |
+        (0x55U << screen->blue_mask_shift);
+
+    (void)rgb;
+
+    for (unsigned py = 0; py < CURSOR_H; ++py) {
+        for (unsigned px = 0; px < CURSOR_W; ++px) {
+            uint64_t dx = x + px;
+            uint64_t dy = y + py;
+
+            volatile uint32_t *source =
+                (volatile uint32_t *)(
+                    (uint8_t *)screen->address +
+                    dy * screen->pitch +
+                    dx * 4
+                );
+
+            cursor_saved[py * CURSOR_W + px] = *source;
+            pixel(dx, dy, color);
+        }
+    }
+
+    cursor_visible = true;
+}
+
 static void clear(void) {
     for (uint64_t y = 0; y < screen->height; ++y)
         for (uint64_t x = 0; x < screen->width; ++x) pixel(x, y, 0);
     column = row = 0;
 }
+
 bool framebuffer_init(struct limine_framebuffer *fb) {
     /* Phase 1 supports RGB 32bpp, byte-aligned 8-bit channels. */
     if (!fb || !fb->address || ((uintptr_t)fb->address & 3) || fb->bpp != 32 || fb->memory_model != 1 ||
@@ -89,11 +165,13 @@ bool framebuffer_init(struct limine_framebuffer *fb) {
         fb->height < CELL_H || fb->width > 8192 || fb->height > 8192 ||
         fb->pitch < fb->width * 4 || fb->pitch > 65536 || fb->pitch % 4) return false;
     screen = fb;
+    cursor_visible = false;
     foreground = (0xddU << fb->red_mask_shift) | (0xeeU << fb->green_mask_shift)
                | (0xffU << fb->blue_mask_shift);
     clear();
     return true;
 }
+
 void framebuffer_putc(char c) {
     if (!screen) return;
     if (c == '\r') { column = 0; return; }

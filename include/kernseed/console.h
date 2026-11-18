@@ -19,6 +19,8 @@ void framebuffer_draw_sprite(
     const uint8_t *pixels,
     uint32_t scale
 );
+void framebuffer_cursor_show(void);
+void framebuffer_cursor_hide(void);
 void console_write(const char *s);
 void console_hex(uint64_t value);
 void console_dec(uint64_t value);

@@ -2,10 +2,29 @@
 #include <kernseed/terminal.h>
 #include <kernseed/console.h>
 /* One shell task owns interactive display. Never called by keyboard IRQ. */
-void terminal_write(const char *s){console_write(s);}
+static bool cursor_enabled = false;
+
+void terminal_cursor_enable(bool enabled) {
+    framebuffer_cursor_hide();
+    cursor_enabled = enabled;
+
+    if (cursor_enabled)
+        framebuffer_cursor_show();
+}
+
+void terminal_write(const char *s) {
+    if (cursor_enabled)
+        framebuffer_cursor_hide();
+
+    console_write(s);
+
+    if (cursor_enabled)
+        framebuffer_cursor_show();
+}
+
 void terminal_clear(void){
-    framebuffer_clear();
-    const char *s="\033[2J\033[H";while(*s)serial_putc(*s++);
+    if (cursor_enabled)
+        framebuffer_cursor_hide();
 }
 void terminal_erase(void){
     framebuffer_backspace();
