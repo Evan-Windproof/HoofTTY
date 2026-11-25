@@ -1,6 +1,6 @@
 # HoofTTY
 
-**Beta 0.3.0 · A My Little Pony–inspired, text-first hobby operating system for x86-64.**
+**Beta 0.4.0 · A My Little Pony–inspired, text-first hobby operating system for x86-64.**
 
 [Official website](https://evanwindproof.top/projects/hooftty/) · [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
@@ -16,20 +16,23 @@ The project **inherits Kernseed's educational x86-64 monolithic-kernel foundatio
 
 HoofTTY is a fan-made hobby experiment; it is **not affiliated with, sponsored by, or endorsed by Hasbro**.
 
-## Beta 0.3.0 — current capabilities
+## Beta 0.4.0 — current capabilities
 
 | Area | Present behavior |
 | --- | --- |
 | Boot | Limine-based boot image; QEMU launch workflow included |
 | Kernel | x86-64 educational monolithic kernel; inherited interrupts, memory management, scheduling and built-in Ring 3 demos |
-| Display | Framebuffer terminal with original 5×7 ASCII bitmap glyphs (rendered larger on screen) and **16 foreground colors** |
-| Boot appearance | Colored HoofTTY welcome text and an experimental **Evan** indexed-color sprite (48×54 source pixels) |
-| Shell | `hoof>` prompt, command registry, bounded argument parsing and basic line editing |
+| Display | Framebuffer terminal using the bootloader-provided dimensions; original 5×7 ASCII bitmap glyphs (rendered larger on screen) and **16 foreground colors**; four Limine boot modes (800×600 default, 640×480, 1024×768, 1280×720) |
+| Boot appearance | Colored HoofTTY welcome text and an experimental **Evan** indexed-color sprite (48×54 source pixels) that automatically adjusts its horizontal position for the selected resolution |
+| Shell | `hoof>` prompt, command registry, bounded argument parsing, basic line editing, and a visible green underline input cursor that follows typed characters |
 | Pony-themed commands | `friendship`, `party`, `rainboom`, `yay` |
 | Diagnostics | System information, memory statistics, task states and PIT-based uptime |
+| Power control | Experimental `shutdown` command; power-off has been verified only in the tested QEMU PC configuration |
 | Embedded apps | A fixed set of built-in Ring 3 examples; **no general-purpose ELF loader** |
 
-**Important:** The screenshot / checked-in command registry for this version has **13 commands**. Earlier ideas such as `pony` and the hidden `Who's Evan?` command are *not* listed as implemented shell commands. The Evan boot sprite is a separate visual feature.
+All four preset display modes have been successfully tested in QEMU. Resolution is selected at boot; runtime switching is not supported.
+
+**Important:** The screenshot / checked-in command registry for this version has **14 commands**. Earlier ideas such as `pony` and the hidden `Who's Evan?` command are *not* listed as implemented shell commands. The Evan boot sprite is a separate visual feature.
 
 ## Quick start
 
@@ -63,7 +66,7 @@ make debug         # QEMU paused with GDB server at 127.0.0.1:1234
 make clean         # remove build outputs
 ```
 
-`make test` runs a broader, multi-configuration test sequence that may take longer and can change the active build configuration; use it when preparing a release. These instructions describe the checked-in Makefile and scripts, not a claim that every target has been run for Beta 0.3.0. **QEMU graphics have been demonstrated during development; VMware and physical-hardware compatibility are not guaranteed.**
+`make test` runs a broader, multi-configuration test sequence that may take longer and can change the active build configuration; use it when preparing a release. These instructions describe the checked-in Makefile and scripts, not a claim that every target has been run for Beta 0.4.0. **QEMU graphics have been demonstrated during development; VMware and physical-hardware compatibility are not guaranteed.**
 
 ## Shell command reference
 
@@ -81,6 +84,7 @@ At the prompt, type `friendship` to see the command list. Commands are case-sens
 | `rainboom` | `rainboom` | Clear the terminal screen |
 | `reboot` | `reboot` | Request a PC reset via the i8042 controller |
 | `run` | `run name` | Run one of the registered built-in Ring 3 applications |
+| `shutdown` | `shutdown` | Request power-off in the tested QEMU PC configuration (experimental; not a generic ACPI driver) |
 | `tasks` | `tasks` | Display task IDs, states, switches and runtime ticks |
 | `uptime` | `uptime` | Display elapsed PIT tick count and estimated seconds |
 | `yay` | `yay` | Print a small Fluttershy-inspired cheer |
@@ -124,12 +128,14 @@ The source uses `REGISTER_COMMAND(...)` registrations in `shell/commands/` and a
 - The Evan boot image is drawn directly to the framebuffer; `rainboom`/scrolling may clear, move or overwrite it.
 - The system does **not** offer a general ELF loader or a mainstream application ecosystem. Built-in test apps have fixed names.
 - `reboot` depends on the virtual/physical i8042 controller and may fail on unsupported configurations.
+- `shutdown` is an experimental QEMU PC/PIIX4-specific power-off request, not a general ACPI implementation. It has only been verified in the tested QEMU PC setup; do not use it on unknown hardware.
+- Display resolution is selected at boot through the Limine menu; runtime resolution switching is not supported. Font size remains fixed across supported modes.
 - The currently registered `rainboom` implementation allows **zero arguments**, even though its internal usage string may display `[arg]`.
 - Internal names such as `kernseed.elf`, `kernseed.iso`, `KERNSEED_*` and `include/kernseed/` are retained for compatibility; do not rename them independently.
 
 ## Roadmap (ideas, not promises)
 
-- Improve sprite placement, resolution independence and drawing tests.
+- Expand framebuffer and sprite-rendering tests.
 - Add more deliberate terminal-color behavior and optional background/ANSI support.
 - Add original pony art and optional character-themed commands (for example `pony` when actually implemented).
 - Consider Unicode and CJK text only after the terminal architecture can support them reliably.
