@@ -2,7 +2,7 @@
 
 **Beta 0.3.0 · A My Little Pony–inspired, text-first hobby operating system for x86-64.**
 
-[English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
+[Official website](https://evanwindproof.top/projects/hooftty/) · [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
 > **Development status:** Experimental beta. HoofTTY is a standalone hobby OS based on **Kernseed OS Phase 7**, not a Linux distribution, a Linux shell theme, or a terminal emulator. It runs its own kernel and shell. Do not use it for important data or production workloads.
 >
