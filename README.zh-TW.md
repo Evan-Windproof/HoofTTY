@@ -4,6 +4,8 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md)
 
+[官方网站](https://hooftty.evanwindproof.top/)
+
 > **開發狀態：實驗性 Beta。** HoofTTY 是由 **Kernseed OS Phase 7** 延伸而來的獨立業餘作業系統，不是 Linux 發行版、既有 Shell 主題，也不是終端機模擬器。請勿用於正式工作或儲存重要資料。
 >
 > **授權提醒：** 專案自有程式碼採用 **GNU GPL 第 3 版或後續版本（`GPL-3.0-or-later`）**。允許商業與非商業使用，但必須遵守 GPL；第三方元件保留原授權，詳見文末。
